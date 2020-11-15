@@ -7,23 +7,36 @@
 
 import SwiftUI
 
-enum Unit: String, CaseIterable {
-    case celsius = "°C"
-    case fahrenheit = "°F"
-    case kelvin = "°K"
+struct UnitOptions: Hashable {
+    var unit: UnitTemperature
+    var name: String
+    
+    static var celsius = UnitOptions(unit: .celsius, name: "Celsius")
+    static var fahrenheit = UnitOptions(unit: .fahrenheit, name: "Fahrenheit")
+    static var kelvin = UnitOptions(unit: .kelvin, name: "Kelvin")
 }
 
 struct ContentView: View {
-    @State private var temperature = "0.0"
-    @State private var unit = Unit.celsius
+    @State private var temperature = "100.0"
+    @State private var selectedUnit = UnitOptions.celsius
+    
+    var unitOptions: [UnitOptions] = [.celsius, .fahrenheit, .kelvin]
+    
+    var measurements: [Measurement<UnitTemperature>] {
+        let measurement = Measurement(value: Double(self.temperature) ?? 0, unit: self.selectedUnit.unit)
+        
+        return unitOptions
+            .filter { $0.unit != self.selectedUnit.unit }
+            .map { measurement.converted(to: $0.unit) }
+    }
     
     var body: some View {
         NavigationView {
             Form {
                 Section {
-                    Picker("Unit", selection: $unit) {
-                        ForEach(Unit.allCases, id: \.self) {
-                            Text($0.rawValue)
+                    Picker("Unit", selection: $selectedUnit) {
+                        ForEach(unitOptions, id: \.self) {
+                            Text($0.unit.symbol)
                         }
                     }.pickerStyle(SegmentedPickerStyle())
                 }
@@ -33,17 +46,15 @@ struct ContentView: View {
                         .keyboardType(.decimalPad)
                 }
                 
-                Section {
-                    HStack(alignment: .top, spacing: 0) {
-                        Text("\(temperature) \(Unit.celsius.rawValue)")
-                        Spacer()
-                        Text("\(temperature) \(Unit.fahrenheit.rawValue)")
-                        Spacer()
-                        Text("\(temperature) \(Unit.kelvin.rawValue)")
+                Section(header: Text("Result")) {
+                    ForEach(measurements, id: \.unit.symbol) { measure in
+                        Text("\(measure.value, specifier: "%.2f") \(measure.unit.symbol)")
                     }
                 }
             }
             .navigationBarTitle("WeConvert")
+        }.onTapGesture {
+            self.hideKeyboard()
         }
     }
 }
