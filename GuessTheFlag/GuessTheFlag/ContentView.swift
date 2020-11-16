@@ -37,13 +37,13 @@ struct ContentView: View {
                     }
                 }
                 
+                Spacer()
+                
                 HStack {
                     Spacer()
                     Text("Score: \(userScore)")
                         .foregroundColor(.white)
                 }.padding()
-                
-                Spacer()
             }
         }.alert(isPresented: $showingScore) {
             Alert(title: Text(scoreTitle), message: Text("Your score is \(userScore)"), dismissButton: .default(Text("Continue")) {
@@ -57,7 +57,7 @@ struct ContentView: View {
             scoreTitle = "Correct"
             userScore += 30
         } else {
-            scoreTitle = "Wrong! That’s the flag of \(countries[correctAnswer])"
+            scoreTitle = "Wrong! That’s the flag of \(countries[number])"
         }
         
         showingScore = true
