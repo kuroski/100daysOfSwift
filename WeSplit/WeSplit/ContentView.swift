@@ -28,6 +28,10 @@ struct ContentView: View {
         return (perPerson: amountPerPerson, total: grandTotal)
     }
     
+    var isCheap: Bool {
+        return tipPercentages[tipPercentage] == 0
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -37,12 +41,6 @@ struct ContentView: View {
                     TextField("Number of people", text: $numberOfPeople)
                         .keyboardType(.numberPad)
                 }
-                
-//                Picker("Number of people", selection: $numberOfPeople) {
-//                    ForEach(2 ..< 100) {
-//                        Text("\($0) people")
-//                    }
-//                }
                 
                 Section(header: Text("How much tip do you want to leave?")) {
                     Picker("Tip percentage", selection: $tipPercentage) {
@@ -54,6 +52,7 @@ struct ContentView: View {
                 
                 Section(header: Text("Total amount")) {
                     Text("$\(check.total, specifier: "%.2f")")
+                        .proiminentTitle(color: isCheap ? .red : .blue)
                 }
                 
                 Section(header: Text("Amount per person")) {
