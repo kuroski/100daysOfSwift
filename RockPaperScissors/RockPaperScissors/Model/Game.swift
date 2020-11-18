@@ -9,7 +9,6 @@ import SwiftUI
 
 struct Game: Identifiable {
     let id = UUID()
-    
     let goal = Goal.allCases.randomElement()!
     let opponentChoice: Move = Move.allCases.randomElement()!
     
@@ -19,10 +18,10 @@ struct Game: Identifiable {
         switch self.goal {
         case .win:
             self.userWon = userChoice.does(winAgainst: opponentChoice)
-            return self.userWon!
         case .lose:
             self.userWon = userChoice.does(loseAgainst: opponentChoice)
-            return self.userWon!
         }
+        
+        return self.userWon!
     }
 }

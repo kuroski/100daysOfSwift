@@ -42,11 +42,22 @@ struct GoalView: View {
 }
 
 struct ContentView: View {
+    let maxRounds = 10
+    
     @State private var game = Game()
     @State private var showAlert = false
+    @State private var score = 0
+    @State private var currentRound = 0
+    
+    
+    var isGameOver: Bool {
+        return currentRound >= maxRounds
+    }
     
     var body: some View {
         VStack {
+            Spacer()
+            
             MoveView(move: game.opponentChoice)
                 .font(.system(size: 100))
                 .padding(20)
@@ -66,6 +77,14 @@ struct ContentView: View {
                     }
                 }
             }
+            
+            Spacer()
+            
+            HStack {
+                Text("Score \(score)")
+                Spacer()
+                Text("Round \(currentRound)/\(maxRounds)")
+            }.padding()
         }.alert(isPresented: $showAlert) {
             let userWon = game.userWon ?? false
             let title = userWon ? "Correct!" : "Incorrect!"
@@ -74,13 +93,7 @@ struct ContentView: View {
             return Alert(
                 title: Text(title),
                 message: Text(description),
-                dismissButton: Alert.Button.default(
-                    Text("Continue"),
-                    action: {
-                        game = Game()
-                        showAlert = false
-                    }
-                )
+                dismissButton: self.renderDismissButton()
             )
         }
     }
@@ -88,7 +101,37 @@ struct ContentView: View {
     private func userAnswered(withMove move: Move) {
         let win = game.answer(withMove: move)
         self.showAlert = true
-        print(win)
+        self.updateScore(withWin: win)
+    }
+    
+    
+    private func updateScore(withWin win: Bool) -> Void {
+        self.score += win ? 1 : -1
+        self.currentRound += 1
+    }
+    
+    private func renderDismissButton() -> Alert.Button {
+        if (isGameOver) {
+            return Alert.Button.destructive(
+                Text("New game"),
+                action: {
+                    score = 0
+                    currentRound = 0
+                    game = Game()
+                    showAlert = false
+                    
+                }
+            )
+            
+        }
+        
+        return Alert.Button.default(
+            Text("Continue"),
+            action: {
+                game = Game()
+                showAlert = false
+            }
+        )
     }
 }
 
