@@ -7,103 +7,88 @@
 
 import SwiftUI
 
-enum Move: String, CaseIterable {
-    case rock = "Rock"
-    case paper = "Paper"
-    case scissors = "Scissors"
+struct MoveView: View {
+    var move: Move
     
-    var winDescription: String {
-        switch self {
-        case .rock:
-            return "🪨 Rocks crush scissors."
-        case .paper:
-            return "📃 Paper covers rock."
-        case .scissors:
-            return "✂️ Scissors cut paper."
+    var body: some View {
+        return Group {
+            switch move {
+            case .rock:
+                Text("🪨")
+            case .paper:
+                Text("📃")
+            case .scissors:
+                Text("✂️")
+            }
         }
-    }
-    
-    var loseDescription: String {
-        switch self {
-        case .rock:
-            return "📃 Paper covers rock."
-        case .paper:
-            return "✂️ Scissors cut paper."
-        case .scissors:
-            return "🪨 Rocks crush scissors."
-        }
-    }
-    
-    func does(winAgainst opponentMove: Move) -> Bool {
-        switch self {
-        case .rock:
-            return opponentMove == .scissors
-        case .paper:
-            return opponentMove == .rock
-        case .scissors:
-            return opponentMove == .paper
-        }
-    }
-    
-    func does(loseAgainst opponentMove: Move) -> Bool {
-        return self != opponentMove && opponentMove.does(winAgainst: self)
-    }
-    
-    static func who(winAgainst opponentMove: Move) -> Move {
-        return Move.allCases.first { (move) -> Bool in
-            return move.does(winAgainst: opponentMove)
-        }!
-    }
-    
-    static func who(loseAgainst opponentMove: Move) -> Move {
-        return Move.allCases.first { (move) -> Bool in
-            return move.does(loseAgainst: opponentMove)
-        }!
     }
 }
 
-struct Game: Identifiable {
-    let id = UUID()
-    var move: Move
+struct GoalView: View {
+    var goal: Goal
+    
+    var body: some View {
+        return HStack {
+            Text("How to")
+            switch goal {
+            case .win:
+                Text("WIN").foregroundColor(.green).fontWeight(.bold)
+            case .lose:
+                Text("LOSE").foregroundColor(.red).fontWeight(.bold)
+            }
+            Text("this game?")
+        }.font(.title)
+    }
 }
 
 struct ContentView: View {
-    @State private var choice: Game?
-    @State private var shouldWin = Bool.random()
-    
-    @State private var opponentMove = Move.allCases.randomElement()!
+    @State private var game = Game()
+    @State private var showAlert = false
     
     var body: some View {
         VStack {
-            Text(opponentMove.rawValue).font(.title)
+            MoveView(move: game.opponentChoice)
+                .font(.system(size: 100))
+                .padding(20)
+                .overlay(
+                    Capsule(style: .circular)
+                        .stroke(Color.gray, lineWidth: 3)
+                )
             
-            Text(shouldWin ? "Choose to win" : "Choose to lose")
-                .padding(.vertical, 10)
+            GoalView(goal: game.goal).padding(.vertical, 50)
             
             HStack(spacing: 30) {
                 ForEach(Move.allCases, id: \.self) { move in
-                    Button(move.rawValue, action: {
-                        choice = Game(move: move)
-                    })
+                    Button(action: { self.userAnswered(withMove: move) }) {
+                        MoveView(move: move)
+                            .padding()
+                            .font(.system(size: 50))
+                    }
                 }
             }
-        }.alert(item: $choice) { selectedChoice in
-            let gotItRight = shouldWin ? selectedChoice.move.does(winAgainst: opponentMove) : selectedChoice.move.does(loseAgainst: opponentMove)
+        }.alert(isPresented: $showAlert) {
+            let userWon = game.userWon ?? false
+            let title = userWon ? "Correct!" : "Incorrect!"
+            let description = userWon ? "Great, go to the next round." : "Sorry, but this is wrong."
             
-            print([shouldWin, gotItRight, selectedChoice.move.rawValue, opponentMove.rawValue])
-            
-            var message = shouldWin ? selectedChoice.move.winDescription : selectedChoice.move.loseDescription
-            
-            if !gotItRight {
-                message = shouldWin ? Move.who(winAgainst: opponentMove).winDescription : Move.who(loseAgainst: opponentMove).loseDescription
-            }
-            
-            return Alert(title: Text(gotItRight ? "Correct!" : "Wrong!"), message: Text(message), dismissButton: Alert.Button.default(Text("Continue"), action: {
-                choice = nil
-                shouldWin = Bool.random()
-                opponentMove = Move.allCases.randomElement()!
-            }))
+            return Alert(
+                title: Text(title),
+                message: Text(description),
+                dismissButton: Alert.Button.default(
+                    Text("Continue"),
+                    action: {
+                        game = Game()
+                        showAlert = false
+                    }
+                )
+            )
         }
+    }
+    
+    private func userAnswered(withMove move: Move) {
+        let win = game.answer(withMove: move)
+        self.showAlert = true
+        print(win)
     }
 }
 
