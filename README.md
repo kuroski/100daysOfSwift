@@ -52,3 +52,10 @@ This repository contains my projects made while following along with [Paul Hudso
 
 <br/>
 <br/>
+
+
+- Day 29-31 - [Project 5: WordScramble](./WordScramble)
+
+<div style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/1855125/99726225-880e8700-2ab6-11eb-858d-430b2476d45f.gif" width="300px"/>
+</div>
