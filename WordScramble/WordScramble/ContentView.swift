@@ -16,6 +16,12 @@ struct ContentView: View {
     @State private var errorMessage = ""
     @State private var showingError = false
     
+    var score: Int {
+        return usedWords.reduce(0) { (result, value) -> Int in
+            result + value.count
+        }
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -24,12 +30,21 @@ struct ContentView: View {
                     .padding()
                     .autocapitalization(.none)
                 
+                HStack {
+                    Spacer()
+                    Text("Score: \(score)")
+                }.padding()
+                
                 List(usedWords, id: \.self) {
                     Image(systemName: "\($0.count).circle")
                     Text($0)
                 }
                 .navigationBarTitle(rootWord)
                 .onAppear(perform: startGame)
+                .navigationBarItems(leading: Button(action: startGame) {
+                    Image(systemName: "arrow.clockwise")
+                    Text("Restart")
+                })
                 .alert(isPresented: $showingError) {
                     Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("OK")))
                 }
@@ -42,6 +57,7 @@ struct ContentView: View {
             if let startWords = try? String(contentsOf: startWordsURL) {
                 let allWords = startWords.components(separatedBy: "\n")
                 rootWord = allWords.randomElement() ?? "silkworm"
+                usedWords = [String]()
                 return
             }
         }
@@ -54,6 +70,10 @@ struct ContentView: View {
         
         guard answer.count > 0 else { return }
         
+        guard answer != rootWord else {
+            wordError(title: "Same word", message: "You must provide a diferent word.")
+            return
+        }
         guard isOriginal(word: answer) else {
             wordError(title: "Word used already", message: "Be more original")
             return
@@ -90,6 +110,8 @@ struct ContentView: View {
     }
     
     private func isReal(word: String) -> Bool {
+        guard word.count >= 3 else { return false }
+        
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: word.utf16.count)
         let mispelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
