@@ -24,7 +24,7 @@ This repository contains my projects made while following along with [Paul Hudso
 <br/>
 
 
-- Day 20-24 - [Project 2: GuessTheFlag](./GuessTheFlag)
+- Day 20-24 - [Project 2 and 3: GuessTheFlag](./GuessTheFlag)
 
 <div style="text-align: center;">
   <img src="https://user-images.githubusercontent.com/1855125/99193369-cc2d1f00-2778-11eb-95a9-717e373316c4.gif" width="300px"/>
@@ -38,6 +38,16 @@ This repository contains my projects made while following along with [Paul Hudso
 
 <div style="text-align: center;">
   <img src="https://user-images.githubusercontent.com/1855125/99539436-85c10580-29ae-11eb-9356-4b86eefdc69a.gif" width="300px"/>
+</div>
+
+<br/>
+<br/>
+
+
+- Day 26-28 - [Project 4: BetterRest](./BetterRest)
+
+<div style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/1855125/99635390-33c9bf80-2a42-11eb-9acc-567259b608aa.gif" width="300px"/>
 </div>
 
 <br/>
