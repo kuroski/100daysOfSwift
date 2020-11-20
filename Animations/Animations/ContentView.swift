@@ -172,8 +172,8 @@ struct ContentView: View {
         //        ExplicitAnimationButton()
         //        ControllingAnimationButton()
         //        GradientDragAnimation()
-        //        TextDragAnimation()
-        ConditionalRenderingAnimation()
+                TextDragAnimation()
+//        ConditionalRenderingAnimation()
     }
 }
 
