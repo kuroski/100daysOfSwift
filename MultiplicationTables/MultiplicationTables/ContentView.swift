@@ -7,6 +7,39 @@
 
 import SwiftUI
 
+enum Animals: String, CaseIterable {
+    case bear
+    case buffalo
+    case chick
+    case chicken
+    case cow
+    case crocodile
+    case dog
+    case duck
+    case elephant
+    case frog
+    case giraffe
+    case goat
+    case gorilla
+    case hippo
+    case horse
+    case monkey
+    case moose
+    case narwhal
+    case owl
+    case panda
+    case parrot
+    case penguin
+    case pig
+    case rabbit
+    case rhino
+    case sloth
+    case snake
+    case walrus
+    case whale
+    case zebra
+}
+
 struct Question: Identifiable {
     let id = UUID()
     let title: String
@@ -25,15 +58,40 @@ struct SettingsView: View {
     
     var generateQuestions: (Int, Int) -> Void
     
+    var animals: [Animals] = Array(Animals.allCases.shuffled()[..<12])
+    
+    let animalColumns: [GridItem] = Array(repeating: .init(.flexible()), count: 4)
+    
     var body: some View {
         Form {
             Section(header: Text("Multiplication table")) {
-                Stepper(value: $table, in: 1...12, onEditingChanged: { val in
-                    if table == 1 && amount == 20 {
-                        amount = 10
+                HStack {
+                    Spacer()
+                    VStack {
+                        Stepper(String(table), value: $table, in: 1...12, onEditingChanged: { val in
+                            if table == 1 && amount == 20 {
+                                amount = 10
+                            }
+                        }).labelsHidden()
+                        
+                        LazyVGrid(columns: animalColumns) {
+                            ForEach((0...(table - 1)), id: \.self) { index in
+                                ZStack {
+                                    Image(animals[index].rawValue).resizable().scaledToFit()
+                                    Text(String(index+1))
+                                        .font(.body)
+                                        .padding(8)
+                                        .background(Color(.displayP3, red: 255, green: 255, blue: 255, opacity: 0.8))
+                                        .clipShape(Circle())
+                                        .overlay(
+                                            Circle()
+                                                .stroke(Color.gray, style: StrokeStyle(lineWidth: 3))
+                                        )
+                                }
+                            }
+                        }
                     }
-                }) {
-                    Text(String(table))
+                    Spacer()
                 }
             }
             
