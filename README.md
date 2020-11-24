@@ -69,3 +69,13 @@ This repository contains my projects made while following along with [Paul Hudso
 <div style="text-align: center;">
   <img src="https://user-images.githubusercontent.com/1855125/99776256-cfc1fc80-2b10-11eb-894a-2aaea028f217.gif" width="300px"/>
 </div>
+
+<br/>
+<br/>
+
+
+- Day 35 - [Challenge 3: MultiplicationTables](./MultiplicationTables)
+
+<div style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/1855125/100065235-d2d02c00-2e33-11eb-8601-6cd8c12d8a5e.gif" width="300px"/>
+</div>

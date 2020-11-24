@@ -59,14 +59,19 @@ struct Question: Identifiable {
     
     var userAnswer: Int?
     
+    var isRight: Bool {
+        guard let userAnswer = self.userAnswer else { return false }
+        return userAnswer == self.answer
+    }
+    
     mutating func answerQuestion(_ answer: String) -> Void {
         self.userAnswer = Int(answer)
     }
 }
 
 struct SettingsView: View {
-    @State var table: Int = 1
-    @State var amount: Int = 5
+    @State private var table: Int = 1
+    @State private var amount: Int = 5
     
     var generateQuestions: (Int, Int) -> Void
     
@@ -212,12 +217,41 @@ struct GameView: View {
     }
 }
 
+struct EndView: View {
+    var questions: [Question]
+    var newGame: () -> Void
+    
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(questions) { question in
+                    HStack {
+                        Image(systemName: question.isRight ? "checkmark.circle" : "xmark.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25)
+                            .foregroundColor(question.isRight ? .green : .red)
+                        Text("\(question.title) = \(question.answer)").font(.title2)
+                        Spacer()
+                        Text("\(question.userAnswer!)")
+                            .fontWeight(.bold)
+                            .foregroundColor(question.isRight ? .green : .red)
+                            .padding(8)
+                            .overlay(
+                                Circle()
+                                    .stroke(question.isRight ? Color.green : Color.red, lineWidth: 2)
+                            )
+                    }
+                }
+            }.navigationBarItems(trailing: Button("New game", action: self.newGame))
+        }
+    }
+}
+
 struct ContentView: View {
-    @State private var table: Int = 1
-    @State private var amount: Int = 5
     @State private var questions: [Question] = []
     
-    var allQuestionsAnswered: Bool {
+    var hasAllQuestionsAnswered: Bool {
         questions.allSatisfy { question -> Bool in
             question.userAnswer != nil
         }
@@ -226,26 +260,27 @@ struct ContentView: View {
     var body: some View {
         Group {
             if (questions.isEmpty) {
-                SettingsView(table: table, amount: amount, generateQuestions: generateQuestions)
-            } else if allQuestionsAnswered {
-                List {
-                    ForEach(questions) { question in
-                        HStack {
-                            Text("\(question.title) = \(question.answer)")
-                            Text("You answered \(question.userAnswer!)")
-                        }
-                    }
-                }
+                SettingsView(generateQuestions: self.generateQuestions)
+            } else if hasAllQuestionsAnswered {
+                EndView(questions: questions, newGame: self.newGame)
             } else {
-                GameView(questions: questions, questionAnswered: questionAnswered)
+                GameView(questions: questions, questionAnswered: self.questionAnswered)
+                    .onTapGesture {
+                        self.hideKeyboard()
+                    }
             }
         }
-        .onTapGesture {
-            self.hideKeyboard()
-        }
-        .onAppear {
-            self.generateQuestions(withTable: 1, withAmount: 10)
-        }
+        //        .onAppear {
+        //            generateQuestions(withTable: 1, withAmount: 2)
+        //
+        //            questions.enumerated().forEach { index, _ in
+        //                questionAnswered("1", forQuestion: index)
+        //            }
+        //        }
+    }
+    
+    private func newGame() -> Void {
+        self.questions = []
     }
     
     private func questionAnswered(_ answer: String, forQuestion index: Int) -> Void {
