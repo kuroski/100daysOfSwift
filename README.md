@@ -79,3 +79,13 @@ This repository contains my projects made while following along with [Paul Hudso
 <div style="text-align: center;">
   <img src="https://user-images.githubusercontent.com/1855125/100065235-d2d02c00-2e33-11eb-8601-6cd8c12d8a5e.gif" width="300px"/>
 </div>
+
+<br/>
+<br/>
+
+
+- Day 36-38 - [Project 7: iExpense](./iExpense)
+
+<div style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/1855125/100462144-1774f500-30ca-11eb-9adb-d424bcc6ad90.gif" width="300px"/>
+</div>
