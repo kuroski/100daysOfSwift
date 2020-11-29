@@ -35,4 +35,8 @@ struct Mission: Codable, Identifiable {
             return "N/A"
         }
     }
+    
+    var crewList: String {
+        crew.map { $0.name }.joined(separator: " ,")
+    }
 }

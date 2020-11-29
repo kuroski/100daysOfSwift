@@ -89,3 +89,13 @@ This repository contains my projects made while following along with [Paul Hudso
 <div style="text-align: center;">
   <img src="https://user-images.githubusercontent.com/1855125/100462144-1774f500-30ca-11eb-9adb-d424bcc6ad90.gif" width="300px"/>
 </div>
+
+<br/>
+<br/>
+
+
+- Day 39-42 - [Project 8: Moonshot](./Moonshot)
+
+<div style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/1855125/100579709-f9371100-32e4-11eb-8704-427cea000383.gif" width="300px"/>
+</div>
