@@ -7,6 +7,98 @@
 
 import SwiftUI
 
+struct ChallengeView: View {
+    struct Arrow: Shape {
+        
+        func path(in rect: CGRect) -> Path {
+            var path = Path()
+            
+            let baseWidth = (rect.width * 0.4) / 2
+            
+            // Arrow head points
+            let headTop = CGPoint(x: rect.midX, y: rect.minY)
+            let headBottomLeft = CGPoint(x: rect.minX, y: rect.midY)
+            let headBottomRight = CGPoint(x: rect.maxX, y: rect.midY)
+            
+            // Base points
+            let baseTopRight = CGPoint(x: rect.midX + baseWidth, y: rect.midY)
+            let baseBottomRight = CGPoint(x: rect.midX + baseWidth, y: rect.maxY)
+            let baseBottomLeft = CGPoint(x: rect.midX - baseWidth, y: rect.maxY)
+            let baseTopLeft = CGPoint(x: rect.midX - baseWidth, y: rect.midY)
+            
+            path.move(to: headBottomLeft)
+            
+            path.addLine(to: headTop)
+            path.addLine(to: headBottomRight)
+            
+            path.addLine(to: baseTopRight)
+            path.addLine(to: baseBottomRight)
+            path.addLine(to: baseBottomLeft)
+            path.addLine(to: baseTopLeft)
+            
+            path.addLine(to: headBottomLeft)
+            
+            return path
+        }
+    }
+    
+    struct ColorCyclingRectangle: View {
+        var amount = 0.0
+        var steps = 100
+        
+        var body: some View {
+            ZStack {
+                ForEach(0..<steps) { value in
+                    Rectangle()
+                        .inset(by: CGFloat(value))
+                        .strokeBorder(LinearGradient(gradient: Gradient(colors: [
+                            self.color(for: value, brightness: 1),
+                            self.color(for: value, brightness: 0.5)
+                        ]), startPoint: .top, endPoint: .bottom), lineWidth: 2)
+                }
+            }
+            .drawingGroup()
+        }
+        
+        func color(for value: Int, brightness: Double) -> Color {
+            var targetHue = Double(value) / Double(self.steps) + self.amount
+            
+            if targetHue > 1 {
+                targetHue -= 1
+            }
+            
+            return Color(hue: targetHue, saturation: 1, brightness: brightness)
+        }
+    }
+    
+    @State private var lineWidth: CGFloat = 1.0
+    @State private var colorCycle = 0.0
+    
+    var body: some View {
+        VStack {
+            VStack {
+                Arrow()
+                    .stroke(Color.red, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
+                    .frame(width: 100, height: 100)
+                    .onTapGesture {
+                        withAnimation {
+                            self.lineWidth += 4.0
+                        }
+                    }
+                
+                Slider(value: $lineWidth, in: 1...10, step: 1)
+                    .padding()
+            }
+            
+            VStack {
+                ColorCyclingRectangle(amount: self.colorCycle)
+                    .frame(width: 300, height: 300)
+                Slider(value: $colorCycle)
+            }
+        }
+    }
+}
+
 struct SpirographView: View {
     struct Spirograph: Shape {
         let innerRadius: Int
@@ -394,6 +486,9 @@ struct ContentView: View {
                 NavigationLink(destination: SpirographView()) {
                     Text("Spirograph")
                 }
+                NavigationLink(destination: ChallengeView()) {
+                    Text("Challenge")
+                }
             }.navigationBarTitle(Text("Drawing"))
         }
         
@@ -402,7 +497,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SpirographView()
-        //        ContentView()
+        ChallengeView()
+//                ContentView()
     }
 }
