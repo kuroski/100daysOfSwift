@@ -1,0 +1,31 @@
+[
+    {
+        "id": "E621E1F8-C36C-495A-93FC-0C247A3E6E5F",
+        "name": "Eat healthy meals",
+        "description": "It's a 10 day healthy meal dieat challenge",
+        "type": "build",
+        "goal": 10
+    },
+    {
+        "id": "E621E1F8-C36C-495A-93FC-0C247A3E6E6G",
+        "name": "Exercise everyday",
+        "description": "30 day exercise to build better habits",
+        "type": "build",
+        "goal": 30
+    },
+    {
+        "id": "E621E1F8-C36C-495A-93FC-0C247A3E6E7H",
+        "name": "Quit chocolate on working days",
+        "description": "Just eat chocolate during the weekend",
+        "type": "quit",
+        "goal": 24
+    },
+    {
+        "id": "E621E1F8-C36C-495A-93FC-0C247A3E6E8L",
+        "name": "Sleep early",
+        "description": "Sleep earlier during 10 days",
+        "type": "build",
+        "goal": 10,
+        "done": 21
+    }
+]

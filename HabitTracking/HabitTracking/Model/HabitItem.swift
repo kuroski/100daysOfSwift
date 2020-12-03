@@ -13,9 +13,10 @@ enum Type: String, Codable {
 }
 
 struct HabitItem: Identifiable, Codable {
-    var id = UUID()
+    let id: String
     let type: Type
     let name: String
     let description: String
     let goal: Int?
+    let done: Int?
 }
