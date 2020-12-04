@@ -5,28 +5,41 @@
         "description": "It's a 10 day healthy meal dieat challenge",
         "type": "build",
         "goal": 10,
-        "reward": "Pizza dinner"
+        "reward": "Pizza dinner",
+        "days": [
+            false, true, true, true, false, true, true, true, true, true,
+            false, true, true, true, false, true, true, true, true, true,
+            false, true, true, true, false, true, true, true, null, null
+        ]
     },
     {
         "id": "E621E1F8-C36C-495A-93FC-0C247A3E6E6G",
         "name": "Exercise everyday",
         "description": "30 day exercise to build better habits",
         "type": "build",
-        "goal": 30
+        "goal": 30,
+        "days": [
+            null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null
+        ]
     },
     {
         "id": "E621E1F8-C36C-495A-93FC-0C247A3E6E7H",
         "name": "Quit chocolate on working days",
         "description": "Just eat chocolate during the weekend",
         "type": "quit",
-        "goal": 24
+        "goal": 24,
+        "days": [
+            null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null
+        ]
     },
     {
         "id": "E621E1F8-C36C-495A-93FC-0C247A3E6E8L",
         "name": "Sleep early",
         "description": "Sleep earlier during 10 days",
-        "type": "build",
-        "goal": 10,
-        "done": 21
+        "type": "build"
     }
 ]

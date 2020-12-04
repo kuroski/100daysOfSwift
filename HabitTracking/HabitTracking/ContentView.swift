@@ -31,13 +31,16 @@ struct ContentView: View {
                         Spacer()
                         
                         VStack(alignment: .trailing) {
-                            Text("Goal").font(.caption)
-                            Text(item.goalDescription)
+                            if (item.goal != nil) {
+                                Text("Goal").font(.caption)
+                                Text(item.goalDescription)
+                                
+                                Spacer()
+                            }
                             
-                            Spacer()
                             
-                            Text("Done").font(.caption)
-                            Text(item.doneDescription)
+                            Text("Progress").font(.caption)
+                            Text(item.progressDescription)
                         }
                     }
                 }.padding(.vertical)
@@ -55,15 +58,15 @@ struct ContentView_Previews: PreviewProvider {
         guard let data = try? Data(contentsOf: url) else {
             fatalError("Failed to load habits.json file")
         }
-        
+
         let decoder = JSONDecoder()
         guard let habitList: [HabitItem] = try? decoder.decode([HabitItem].self, from: data) else {
             fatalError("Failed to decode habits")
         }
-        
+
         let habits = Habits()
         habits.items = habitList
-        
+
         return ContentView(habits: habits)
     }
 }

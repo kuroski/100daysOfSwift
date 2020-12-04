@@ -18,22 +18,38 @@ struct HabitItem: Identifiable, Codable {
     let name: String
     let description: String
     let goal: Int?
-    let done: Int?
+    let days: [Bool?]
     let reward: String?
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try values.decode(String.self, forKey: .id)
+        self.type = try values.decode(Type.self, forKey: .type)
+        self.name = try values.decode(String.self, forKey: .name)
+        self.description = try values.decode(String.self, forKey: .description)
+        self.goal = try? values.decode(Int.self, forKey: .goal)
+        self.reward = try? values.decode(String.self, forKey: .reward)
+        self.days = try values.decodeIfPresent([Bool?].self, forKey: .days) ?? Array(repeating: nil, count: 30)
+        
+        if (self.days.count != 30) {
+            fatalError("Decoding Error!: Days array have a value of \(self.days.debugDescription)")
+        }
+    }
+    
+    var daysTried: Int {
+        self.days.filter({ $0 != nil }).count
+    }
     
     var goalDescription: String {
         if let goal = self.goal {
-            return "\(goal)/30"
+            if (daysTried > goal) { return "\(goal)/\(goal)" }
+            return "\(daysTried)/\(goal)"
         }
         
-        return "0/30"
+        return "\(daysTried)/30"
     }
     
-    var doneDescription: String {
-        if let done = self.done {
-            return "\(done)/30"
-        }
-        
-        return "0/30"
+    var progressDescription: String {
+        return "\(daysTried)/30"
     }
 }
