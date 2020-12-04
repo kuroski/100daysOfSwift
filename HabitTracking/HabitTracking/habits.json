@@ -4,7 +4,8 @@
         "name": "Eat healthy meals",
         "description": "It's a 10 day healthy meal dieat challenge",
         "type": "build",
-        "goal": 10
+        "goal": 10,
+        "reward": "Pizza dinner"
     },
     {
         "id": "E621E1F8-C36C-495A-93FC-0C247A3E6E6G",

@@ -14,8 +14,33 @@ struct ContentView: View {
         NavigationView {
             List {
                 ForEach(habits.items) { item in
-                    Text(item.name)
-                }
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(item.name)
+                                .font(.title2)
+                            Spacer()
+                            
+                            if let reward = item.reward {
+                                HStack {
+                                    Image(systemName: "gift")
+                                    Text(reward)
+                                }
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .trailing) {
+                            Text("Goal").font(.caption)
+                            Text(item.goalDescription)
+                            
+                            Spacer()
+                            
+                            Text("Done").font(.caption)
+                            Text(item.doneDescription)
+                        }
+                    }
+                }.padding(.vertical)
             }
             .navigationBarTitle(Text("30 days habit tracker"))
         }

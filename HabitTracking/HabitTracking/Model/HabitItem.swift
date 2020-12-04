@@ -19,4 +19,21 @@ struct HabitItem: Identifiable, Codable {
     let description: String
     let goal: Int?
     let done: Int?
+    let reward: String?
+    
+    var goalDescription: String {
+        if let goal = self.goal {
+            return "\(goal)/30"
+        }
+        
+        return "0/30"
+    }
+    
+    var doneDescription: String {
+        if let done = self.done {
+            return "\(done)/30"
+        }
+        
+        return "0/30"
+    }
 }
