@@ -4,7 +4,7 @@
         "name": "Eat healthy meals",
         "description": "It's a 10 day healthy meal dieat challenge",
         "type": "build",
-        "goal": 10,
+        "goal": 30,
         "reward": "Pizza dinner",
         "days": [
             false, true, true, true, false, true, true, true, true, true,

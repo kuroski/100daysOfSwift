@@ -13,13 +13,13 @@ enum Type: String, Codable {
 }
 
 struct HabitItem: Identifiable, Codable {
-    let id: String
-    let type: Type
-    let name: String
-    let description: String
-    let goal: Int?
-    let days: [Bool?]
-    let reward: String?
+    var id: String
+    var type: Type
+    var name: String
+    var description: String
+    var goal: Int?
+    var days: [Bool?]
+    var reward: String?
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -38,6 +38,21 @@ struct HabitItem: Identifiable, Codable {
     
     var daysTried: Int {
         self.days.filter({ $0 != nil }).count
+    }
+    
+    var finishedDays: Int {
+        self.days.filter({ $0 == true }).count
+    }
+    
+    var progress: Double {
+        guard let goal = self.goal else { return 0.0 }
+        if self.finishedDays > goal { return 1.0 }
+        
+        return Double(self.finishedDays) / Double(goal)
+    }
+    
+    var isDone: Bool {
+        self.daysTried == 30
     }
     
     var goalDescription: String {
