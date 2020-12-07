@@ -54,17 +54,4 @@ struct HabitItem: Identifiable, Codable {
     var isDone: Bool {
         self.daysTried == 30
     }
-    
-    var goalDescription: String {
-        if let goal = self.goal {
-            if (daysTried > goal) { return "\(goal)/\(goal)" }
-            return "\(daysTried)/\(goal)"
-        }
-        
-        return "\(daysTried)/30"
-    }
-    
-    var progressDescription: String {
-        return "\(daysTried)/30"
-    }
 }

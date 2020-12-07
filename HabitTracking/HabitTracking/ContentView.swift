@@ -14,9 +14,9 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(habits.items, id: \.id) { item in
+                ForEach(habits.items) { item in
                     VStack {
-                        HabitCard(habit: item)
+                        HabitCard(habit: item, changed: habits.toggleHabit)
                     }
                 }.padding(.vertical)
             }
@@ -57,6 +57,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct HabitCard: View {
     let habit: HabitItem
+    let changed: (String, Int) -> Void
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -81,13 +82,18 @@ struct HabitCard: View {
             
             Spacer(minLength: 20)
             
-            DailyProgress(days: habit.days)
+            DailyProgress(days: habit.days, dayClicked: dayClicked)
         }
+    }
+    
+    private func dayClicked(index: Int) {
+        self.changed(habit.id, index)
     }
 }
 
 struct DailyProgress: View {
     var days: [Bool?]
+    let dayClicked: (Int) -> Void
     
     let columns = [
         GridItem(.adaptive(minimum: 50))
@@ -96,17 +102,21 @@ struct DailyProgress: View {
     var body: some View {
         LazyVGrid(columns: columns, spacing: 8) {
             ForEach(days.indices) { index in
-                Text(String(format: "%02d", index + 1))
-                    .padding(.all, 10)
-                    .overlay(
-                        Circle()
-                            .stroke(
-                                days[index] == nil ? Color.gray
-                                    : days[index]! ? Color.green
-                                    : Color.red,
-                                lineWidth: 2
-                            )
+                Button(action: {
+                    self.dayClicked(index)
+                }) {
+                    Text(String(format: "%02d", index + 1))
+                        .padding(.all, 10)
+                        .overlay(
+                            Circle()
+                                .stroke(
+                                    days[index] == nil ? Color.gray
+                                        : days[index]! ? Color.green
+                                        : Color.red,
+                                    lineWidth: 2
+                                )
                     )
+                }.buttonStyle(PlainButtonStyle())
             }
         }
     }
