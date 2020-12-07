@@ -28,7 +28,7 @@ struct ContentView: View {
                 Image(systemName: "plus")
             })
             .sheet(isPresented: $showingAddHabit) {
-                Text("TODO: Create add view")
+                AddHabitView(habits: self.habits)
             }
         }
     }
@@ -61,22 +61,22 @@ struct HabitCard: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading) {
+            VStack(alignment: .leading) {
+                HStack {
                     Text(habit.name)
                         .font(.headline)
                     
-                    if let reward = habit.reward {
-                        HStack {
-                            Image(systemName: "gift")
-                            Text(reward)
-                        }.font(.subheadline)
+                    if (habit.goal != nil) {
+                        Spacer()
+                        ProgressBar(progress: habit.progress)
                     }
                 }
                 
-                if (habit.goal != nil) {
-                    Spacer()
-                    ProgressBar(progress: habit.progress)
+                if let reward = habit.reward {
+                    HStack {
+                        Image(systemName: "gift")
+                        Text(reward)
+                    }.font(.subheadline)
                 }
             }
             
@@ -105,26 +105,33 @@ struct DailyProgress: View {
                 Button(action: {
                     self.dayClicked(index)
                 }) {
-                    Text(String(format: "%02d", index + 1))
-                        .padding(.all, 10)
-                        .overlay(
-                            Circle()
-                                .stroke(
-                                    days[index] == nil ? Color.gray
-                                        : days[index]! ? Color.green
-                                        : Color.red,
-                                    lineWidth: 2
-                                )
-                    )
+                    DayCircle(value: days[index], day: index + 1)
                 }.buttonStyle(PlainButtonStyle())
             }
         }
     }
 }
 
+struct DayCircle: View {
+    var value: Bool?
+    var day: Int
+    
+    private var color: (Color) {
+        guard let dayValue = value else { return .gray }
+        return dayValue ? .green : .red
+    }
+    
+    var body: some View {
+        Text(String(format: "%02d", day))
+            .padding(.all, 10)
+            .foregroundColor(color)
+            .overlay(Circle().stroke(color, lineWidth: 2))
+    }
+}
+
 struct ProgressBar: View {
     var progress: Double
-    var thickness: CGFloat = 4.0
+    var thickness: CGFloat = 3.0
     
     var body: some View {
         ZStack {
@@ -140,11 +147,12 @@ struct ProgressBar: View {
                 .rotationEffect(Angle(degrees: 270.0))
                 .animation(.linear)
             
-            Text(String(format: "%.0f%", min(self.progress, 1.0) * 100.0))
-                .font(.caption)
-                .fontWeight(.semibold)
-                .foregroundColor(.green)
+            //                Text("\(geometry.size.height)")
+            
+            //            Text(String(format: "%.0f%%", min(self.progress, 1.0) * 100.0))
+            //                .font(.caption)
+            //                .foregroundColor(.green)
         }
-        .frame(width: 40, height: 40)
+        .frame(width: 20, height: 20)
     }
 }
