@@ -61,16 +61,26 @@ struct HabitCard: View {
     let habit: HabitItem
     let changed: (String, Int) -> Void
     
+    var icon: String {
+        switch habit.type {
+        case .build:
+            return "hammer"
+        case .quit:
+            return "scissors"
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading) {
                 HStack {
+                    Image(systemName: icon)
                     Text(habit.name)
                         .font(.headline)
                     
                     if (habit.goal != nil) {
                         Spacer()
-                        ProgressBar(progress: habit.progress)
+                        ProgressBar(progress: habit.progress, color: .gray)
                     }
                 }
                 
@@ -78,7 +88,9 @@ struct HabitCard: View {
                     HStack {
                         Image(systemName: "gift")
                         Text(reward)
-                    }.font(.subheadline)
+                    }
+                    .font(.subheadline)
+                    .foregroundColor(.orange)
                 }
             }
             
@@ -134,18 +146,19 @@ struct DayCircle: View {
 struct ProgressBar: View {
     var progress: Double
     var thickness: CGFloat = 3.0
+    var color: Color = .green
     
     var body: some View {
         ZStack {
             Circle()
                 .stroke(lineWidth: thickness)
                 .opacity(0.3)
-                .foregroundColor(Color.green)
+                .foregroundColor(color)
             
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: thickness, lineCap: .round, lineJoin: .round))
-                .foregroundColor(Color.green)
+                .foregroundColor(color)
                 .rotationEffect(Angle(degrees: 270.0))
                 .animation(.linear)
             
