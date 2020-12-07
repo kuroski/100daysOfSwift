@@ -38,4 +38,8 @@ class Habits: ObservableObject {
         ]
         self.items[habitIndex].days[index] = dayValue[self.items[habitIndex].days[index]] as? Bool
     }
+    
+    func removeHabit(at offsets: IndexSet) -> Void {
+        self.items.remove(atOffsets: offsets)
+    }
 }

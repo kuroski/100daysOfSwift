@@ -18,11 +18,13 @@ struct ContentView: View {
                     VStack {
                         HabitCard(habit: item, changed: habits.toggleHabit)
                     }
-                }.padding(.vertical)
+                }
+                .onDelete(perform: habits.removeHabit)
+                .padding(.vertical)
             }
             .listStyle(InsetGroupedListStyle())
             .navigationBarTitle(Text("30 days habit tracker"))
-            .navigationBarItems(trailing: Button(action: {
+            .navigationBarItems(leading: EditButton(), trailing: Button(action: {
                 self.showingAddHabit = true
             }) {
                 Image(systemName: "plus")
