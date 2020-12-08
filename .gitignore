@@ -36,8 +36,8 @@ DerivedData/
 *.dSYM
 
 ## Playgrounds
-# timeline.xctimeline
-# playground.xcworkspace
+timeline.xctimeline
+playground.xcworkspace
 
 # Swift Package Manager
 # Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
@@ -89,7 +89,6 @@ iOSInjectionProject/
 ### SwiftPackageManager ###
 Packages
 xcuserdata
-# *.xcodeproj
 
 
 ### Xcode ###
@@ -103,10 +102,10 @@ xcuserdata
 /*.gcno
 
 ### Xcode Patch ###
-# *.xcodeproj/*
-# !*.xcodeproj/project.pbxproj
-# !*.xcodeproj/xcshareddata/
-# !*.xcworkspace/contents.xcworkspacedata
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swift,swiftpackagemanager
