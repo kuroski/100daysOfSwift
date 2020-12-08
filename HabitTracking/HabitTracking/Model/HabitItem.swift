@@ -20,6 +20,7 @@ struct HabitItem: Identifiable {
     var goal: Int?
     var days: [Bool?]
     var reward: String?
+    var rewardClaimed: Bool
     
     var daysTried: Int {
         self.days.filter({ $0 != nil }).count
@@ -36,6 +37,10 @@ struct HabitItem: Identifiable {
         return Double(self.finishedDays) / Double(goal)
     }
     
+    var hasGoalReached: Bool {
+        self.progress == 1.0
+    }
+    
     var isDone: Bool {
         self.daysTried == 30
     }
@@ -49,6 +54,7 @@ extension HabitItem {
         self.description = description
         self.goal = goal
         self.reward = reward
+        self.rewardClaimed = false
         self.days = Array(repeating: nil, count: 30)
     }
 }
@@ -62,6 +68,7 @@ extension HabitItem: Codable {
         self.description = try values.decode(String.self, forKey: .description)
         self.goal = try? values.decode(Int.self, forKey: .goal)
         self.reward = try? values.decode(String.self, forKey: .reward)
+        self.rewardClaimed = try values.decodeIfPresent(Bool.self, forKey: .rewardClaimed) ?? false
         self.days = try values.decodeIfPresent([Bool?].self, forKey: .days) ?? Array(repeating: nil, count: 30)
         
         if (self.days.count != 30) {

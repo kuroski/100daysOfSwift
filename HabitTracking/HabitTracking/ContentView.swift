@@ -10,14 +10,13 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var habits: Habits = Habits()
     @State private var showingAddHabit = false
+    @State private var animationAmount: CGFloat = 1
     
     var body: some View {
         NavigationView {
             List {
                 ForEach(habits.items) { item in
-                    VStack {
-                        HabitCard(habit: item, changed: habits.toggleHabit)
-                    }
+                    HabitCard(habit: item, changed: habits.toggleHabit, claimed: habits.claimHabit)
                 }
                 .onDelete(perform: habits.removeHabit)
                 .padding(.vertical)
@@ -60,6 +59,7 @@ struct ContentView_Previews: PreviewProvider {
 struct HabitCard: View {
     let habit: HabitItem
     let changed: (String, Int) -> Void
+    let claimed: (String) -> Void
     
     var icon: String {
         switch habit.type {
@@ -85,12 +85,7 @@ struct HabitCard: View {
                 }
                 
                 if let reward = habit.reward {
-                    HStack {
-                        Image(systemName: "gift")
-                        Text(reward)
-                    }
-                    .font(.subheadline)
-                    .foregroundColor(.orange)
+                    ProgressButton(reward: reward, claimed: habit.rewardClaimed, progress: habit.progress, action: { self.claimed(habit.id) })
                 }
             }
             
@@ -161,13 +156,78 @@ struct ProgressBar: View {
                 .foregroundColor(color)
                 .rotationEffect(Angle(degrees: 270.0))
                 .animation(.linear)
-            
-            //                Text("\(geometry.size.height)")
-            
-            //            Text(String(format: "%.0f%%", min(self.progress, 1.0) * 100.0))
-            //                .font(.caption)
-            //                .foregroundColor(.green)
         }
         .frame(width: 20, height: 20)
+    }
+}
+
+struct Shake: GeometryEffect {
+    var amount: CGFloat = 5
+    var shakesPerUnit = 1
+    var animatableData: CGFloat
+    
+    var translationX: CGFloat {
+        (amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)))
+    }
+    
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        ProjectionTransform(CGAffineTransform(translationX: translationX, y: 0))
+    }
+}
+
+struct ProgressButton: View {
+    let reward: String
+    let claimed: Bool
+    let progress: Double
+    let action: () -> Void
+    
+    var hasGoalReached: Bool {
+        progress >= 1.0
+    }
+    
+    var body: some View {
+        Button(action: {
+            withAnimation {
+                self.action()
+            }
+        }) {
+            ZStack {
+                GeometryReader { geometry in
+                    RoundedRectangle(cornerRadius: 5.0)
+                        .fill(Color.gray.opacity(0.1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5.0)
+                                .size(
+                                    width: geometry.size.width * CGFloat(progress),
+                                    height: geometry.size.height
+                                )
+                                .fill(Color.gray)
+                                .animation(.default)
+                        )
+                }
+                HStack {
+                    Spacer()
+                    
+                    Image(systemName: "crown")
+                    
+                    
+                    Text(reward)
+                        .font(.body)
+                        .fontWeight(.semibold)
+                    
+                    Spacer()
+                    
+                    if (claimed) {
+                        Image(systemName: "checkmark.circle")
+                            .animation(.default)
+                    }
+                }
+                .padding(.all, 10)
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+        .modifier(Shake(animatableData: CGFloat(hasGoalReached ? 5 : 0)))
+        .animation(hasGoalReached ? .default : .none)
+        .disabled(!hasGoalReached)
     }
 }

@@ -42,4 +42,10 @@ class Habits: ObservableObject {
     func removeHabit(at offsets: IndexSet) -> Void {
         self.items.remove(atOffsets: offsets)
     }
+    
+    func claimHabit(byId id: String) -> Void {
+        guard let habitIndex = self.items.firstIndex(where: { $0.id == id }) else { return }
+        
+        self.items[habitIndex].rewardClaimed.toggle()
+    }
 }
