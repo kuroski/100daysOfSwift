@@ -78,9 +78,9 @@ struct HabitCard: View {
                     Text(habit.name)
                         .font(.headline)
                     
-                    if (habit.goal != nil) {
+                    if (habit.goal != nil && habit.reward == nil) {
                         Spacer()
-                        ProgressBar(progress: habit.progress, color: .gray)
+                        ProgressBar(progress: habit.progress, color: .orange)
                     }
                 }
                 
@@ -156,22 +156,17 @@ struct ProgressBar: View {
                 .foregroundColor(color)
                 .rotationEffect(Angle(degrees: 270.0))
                 .animation(.linear)
+            
+            if progress >= 1.0 {
+                Image(systemName: "checkmark")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 10, height: 10)
+                    .foregroundColor(.orange)
+                    .animation(.default)
+            }
         }
         .frame(width: 20, height: 20)
-    }
-}
-
-struct Shake: GeometryEffect {
-    var amount: CGFloat = 5
-    var shakesPerUnit = 1
-    var animatableData: CGFloat
-    
-    var translationX: CGFloat {
-        (amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)))
-    }
-    
-    func effectValue(size: CGSize) -> ProjectionTransform {
-        ProjectionTransform(CGAffineTransform(translationX: translationX, y: 0))
     }
 }
 
@@ -194,21 +189,21 @@ struct ProgressButton: View {
             ZStack {
                 GeometryReader { geometry in
                     RoundedRectangle(cornerRadius: 5.0)
-                        .fill(Color.gray.opacity(0.1))
+                        .fill(Color.gray.opacity(0.4))
                         .overlay(
                             RoundedRectangle(cornerRadius: 5.0)
                                 .size(
                                     width: geometry.size.width * CGFloat(progress),
                                     height: geometry.size.height
                                 )
-                                .fill(Color.gray)
+                                .fill(hasGoalReached ? Color.orange : Color.gray)
                                 .animation(.default)
                         )
                 }
                 HStack {
                     Spacer()
                     
-                    Image(systemName: "crown")
+                    Image(systemName: hasGoalReached ? "crown.fill" : "crown")
                     
                     
                     Text(reward)
@@ -217,11 +212,12 @@ struct ProgressButton: View {
                     
                     Spacer()
                     
-                    if (claimed) {
+                    if (claimed && hasGoalReached) {
                         Image(systemName: "checkmark.circle")
                             .animation(.default)
                     }
                 }
+                .foregroundColor(hasGoalReached ? .white : .black)
                 .padding(.all, 10)
             }
         }
@@ -229,5 +225,19 @@ struct ProgressButton: View {
         .modifier(Shake(animatableData: CGFloat(hasGoalReached ? 5 : 0)))
         .animation(hasGoalReached ? .default : .none)
         .disabled(!hasGoalReached)
+    }
+}
+
+struct Shake: GeometryEffect {
+    var amount: CGFloat = 5
+    var shakesPerUnit = 1
+    var animatableData: CGFloat
+    
+    var translationX: CGFloat {
+        (amount * sin(animatableData * .pi * CGFloat(shakesPerUnit)))
+    }
+    
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        ProjectionTransform(CGAffineTransform(translationX: translationX, y: 0))
     }
 }

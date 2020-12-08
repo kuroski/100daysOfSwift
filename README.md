@@ -109,3 +109,13 @@ This repository contains my projects made while following along with [Paul Hudso
 <div style="text-align: center;">
   <img src="https://user-images.githubusercontent.com/1855125/100797168-fa218d00-3421-11eb-846e-e9bbd6dc6fb6.gif" width="300px"/>
 </div>
+
+<br/>
+<br/>
+
+
+- Day 47 - [Challenge 4: HabitTracking](./HabitTracking)
+
+<div style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/1855125/101539371-b937f400-399e-11eb-96ee-65c602a7c400.gif" width="300px"/>
+</div>
