@@ -7,19 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A289DB22582033F0068A85E /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A289DB12582033F0068A85E /* CheckoutView.swift */; };
+		5A3AF0F2258115BD00EE1AAA /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3AF0F1258115BD00EE1AAA /* AddressView.swift */; };
 		5A4673AC25801FBA00A827C5 /* CupcakeCornerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4673AB25801FBA00A827C5 /* CupcakeCornerApp.swift */; };
 		5A4673AE25801FBA00A827C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4673AD25801FBA00A827C5 /* ContentView.swift */; };
 		5A4673B025801FBA00A827C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A4673AF25801FBA00A827C5 /* Assets.xcassets */; };
 		5A4673B325801FBA00A827C5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A4673B225801FBA00A827C5 /* Preview Assets.xcassets */; };
+		5AAE09112580C36D0036C5A7 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAE09102580C36D0036C5A7 /* Order.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5A289DB12582033F0068A85E /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
+		5A3AF0F1258115BD00EE1AAA /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
 		5A4673A825801FBA00A827C5 /* CupcakeCorner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CupcakeCorner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A4673AB25801FBA00A827C5 /* CupcakeCornerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CupcakeCornerApp.swift; sourceTree = "<group>"; };
 		5A4673AD25801FBA00A827C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5A4673AF25801FBA00A827C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A4673B225801FBA00A827C5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		5A4673B425801FBA00A827C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5A4673BD2580250A00A827C5 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		5AAE09102580C36D0036C5A7 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,11 +59,15 @@
 		5A4673AA25801FBA00A827C5 /* CupcakeCorner */ = {
 			isa = PBXGroup;
 			children = (
+				5AAE09102580C36D0036C5A7 /* Order.swift */,
 				5A4673AB25801FBA00A827C5 /* CupcakeCornerApp.swift */,
 				5A4673AD25801FBA00A827C5 /* ContentView.swift */,
+				5A3AF0F1258115BD00EE1AAA /* AddressView.swift */,
+				5A289DB12582033F0068A85E /* CheckoutView.swift */,
 				5A4673AF25801FBA00A827C5 /* Assets.xcassets */,
 				5A4673B425801FBA00A827C5 /* Info.plist */,
 				5A4673B125801FBA00A827C5 /* Preview Content */,
+				5A4673BD2580250A00A827C5 /* MyPlayground.playground */,
 			);
 			path = CupcakeCorner;
 			sourceTree = "<group>";
@@ -138,6 +149,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AAE09112580C36D0036C5A7 /* Order.swift in Sources */,
+				5A3AF0F2258115BD00EE1AAA /* AddressView.swift in Sources */,
+				5A289DB22582033F0068A85E /* CheckoutView.swift in Sources */,
 				5A4673AE25801FBA00A827C5 /* ContentView.swift in Sources */,
 				5A4673AC25801FBA00A827C5 /* CupcakeCornerApp.swift in Sources */,
 			);
