@@ -119,3 +119,13 @@ This repository contains my projects made while following along with [Paul Hudso
 <div style="text-align: center;">
   <img src="https://user-images.githubusercontent.com/1855125/101539371-b937f400-399e-11eb-96ee-65c602a7c400.gif" width="300px"/>
 </div>
+
+<br/>
+<br/>
+
+
+- Day 49-52 - [Project 10: CupcakeCorner](./CupcakeCorner)
+
+<div style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/1855125/101793116-c02d4680-3b05-11eb-9e32-7e62b6992596.gif" width="300px"/>
+</div>
