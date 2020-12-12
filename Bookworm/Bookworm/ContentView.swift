@@ -17,6 +17,8 @@ struct ContentView: View {
     
     @State private var showingAddScreen = false
     
+
+    
     var body: some View {
         NavigationView {
             List {
@@ -29,9 +31,13 @@ struct ContentView: View {
                         VStack(alignment: .leading) {
                             Text(book.title ?? "Unknown title")
                                 .font(.headline)
+                                .foregroundColor(book.rating == 1 ? .red : .none)
                             
                             Text(book.author ?? "Unknown author")
                                 .foregroundColor(.secondary)
+                            
+                                
+                            Text(format(date: book.date))
                         }
                         
                     }
@@ -57,6 +63,16 @@ struct ContentView: View {
         }
         
         try? moc.save()
+    }
+    
+    func format(date: Date?) -> String {
+        guard let date = date else {
+            return "Unknown date"
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return formatter.string(from: date)
     }
 }
 
