@@ -139,3 +139,13 @@ This repository contains my projects made while following along with [Paul Hudso
 <div style="text-align: center;">
   <img src="https://user-images.githubusercontent.com/1855125/101991813-64062600-3caf-11eb-8710-f088dc9edd01.gif" width="300px"/>
 </div>
+
+<br/>
+<br/>
+
+
+- Day 57-59 - [Project 12: CoreData](./CoreDataProject)
+
+<div style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/1855125/102008360-09f97500-3d30-11eb-9d7f-831f02d943d6.gif" width="300px"/>
+</div>

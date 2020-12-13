@@ -9,21 +9,42 @@ import SwiftUI
 import CoreData
 
 struct FilteredList<T: NSManagedObject, Content: View>: View {
-    var fetchRequest: FetchRequest<T>
-    var entities: FetchedResults<T> {
-        fetchRequest.wrappedValue
-    }
+    private var filterKey: String
+    private var filterValue: String
     
-    let content: (T) -> Content
+    private var comparisonOperator: NSComparisonPredicate.Operator
+    
+    private var sortDescriptors: [NSSortDescriptor]
+    
+    var fetchRequest: FetchRequest<T>
+    var buildListItem: (T) -> Content
     
     var body: some View {
-        List(entities, id: \.self) { entity in
-            self.content(entity)
+        List(fetchRequest.wrappedValue, id: \.self) { entity in
+            self.buildListItem(entity)
         }
     }
     
-    init(filterKey: String, filterValue: String, @ViewBuilder content: @escaping (T) -> Content) {
-        fetchRequest = FetchRequest<T>(entity: T.entity(), sortDescriptors: [], predicate: NSPredicate(format: "%K BEGINSWITH %@", filterKey, filterValue))
-        self.content = content
+    init(
+        filterKey: String,
+        filterValue: String,
+        filterComparison comparisonOperator: NSComparisonPredicate.Operator = .beginsWith,
+        sortDescriptors: [NSSortDescriptor] = [],
+        @ViewBuilder buildListItem: @escaping (T) -> Content
+    ) {
+        self.filterKey = filterKey
+        self.filterValue = filterValue
+        self.comparisonOperator = comparisonOperator
+        self.sortDescriptors = sortDescriptors
+        self.buildListItem = buildListItem
+        
+        let comparisonString = NSComparisonPredicate.stringValue(for: comparisonOperator)
+        
+        self.fetchRequest = .init(
+            entity: T.entity(),
+            sortDescriptors: sortDescriptors,
+            predicate: NSPredicate(format: "%K \(comparisonString) %@", filterKey, filterValue),
+            animation: nil
+        )
     }
 }
