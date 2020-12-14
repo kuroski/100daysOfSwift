@@ -36,15 +36,21 @@ struct DetailView: View {
 }
 
 struct ContentView: View {
-    let users: [User]
+    @State var users: [User] = [User]()
+    @State var isLoading = true
     
-    init() {
-        self.users = Bundle.main.decode("friendface.json")
-    }
+    //    init() {
+    ////        self.users = Bundle.main.decode("friendface.json")
+    //        let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json")!
+    //    }
     
     var body: some View {
         NavigationView {
             List {
+                if isLoading {
+                    ProgressView()
+                }
+                
                 ForEach(users) { user in
                     NavigationLink(destination: DetailView(id: user.id, users: users)) {
                         Text(user.name)
@@ -52,7 +58,36 @@ struct ContentView: View {
                 }
             }
             .navigationBarTitle(Text("Friendface"))
+            .onAppear(perform: fetchUsers)
         }
+    }
+    
+    func fetchUsers() {
+        let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json")!
+        let request = URLRequest(url: url)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+            
+            guard let data = data else {
+                print("No data in response: \(error?.localizedDescription ?? "Unknown error").")
+                return
+            }
+            
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            if let decodedUsers = try? decoder.decode([User].self, from: data) {
+                DispatchQueue.main.async {
+                    self.users = decodedUsers
+                }
+            } else {
+                print("Invalid response from server")
+            }
+        }.resume()
+        
     }
 }
 

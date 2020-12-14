@@ -14,7 +14,6 @@
 		5ACB15562587B4A200E01F44 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5ACB15552587B4A200E01F44 /* Preview Assets.xcassets */; };
 		5ACB155F2587B4D500E01F44 /* friendface.json in Resources */ = {isa = PBXBuildFile; fileRef = 5ACB155E2587B4D500E01F44 /* friendface.json */; };
 		5ACB15632587B53B00E01F44 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB15622587B53B00E01F44 /* User.swift */; };
-		5ACB15672587B63F00E01F44 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB15662587B63F00E01F44 /* Friend.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +26,6 @@
 		5ACB15572587B4A200E01F44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5ACB155E2587B4D500E01F44 /* friendface.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = friendface.json; sourceTree = "<group>"; };
 		5ACB15622587B53B00E01F44 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		5ACB15662587B63F00E01F44 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +82,6 @@
 			isa = PBXGroup;
 			children = (
 				5ACB15622587B53B00E01F44 /* User.swift */,
-				5ACB15662587B63F00E01F44 /* Friend.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -163,7 +160,6 @@
 				5ACB154F2587B4A100E01F44 /* FriendfaceApp.swift in Sources */,
 				5A7636EC2587BAF1001C905F /* Bundle-Decodable.swift in Sources */,
 				5ACB15632587B53B00E01F44 /* User.swift in Sources */,
-				5ACB15672587B63F00E01F44 /* Friend.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
