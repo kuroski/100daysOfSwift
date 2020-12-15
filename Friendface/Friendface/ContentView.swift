@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct DetailView: View {
     var id: String
@@ -36,8 +37,13 @@ struct DetailView: View {
 }
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var viewContext
+    
+    //    @FetchRequest(entity: CDUser.entity(), sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)]) var cdUsers: FetchedResults<CDUser>
+    
     @State var users: [User] = [User]()
     @State var isLoading = true
+    @State var usersClearedMessage = false
     
     //    init() {
     ////        self.users = Bundle.main.decode("friendface.json")
@@ -58,11 +64,34 @@ struct ContentView: View {
                 }
             }
             .navigationBarTitle(Text("Friendface"))
+            .navigationBarItems(trailing: Button("Clear", action: self.deleteUsers))
             .onAppear(perform: fetchUsers)
+            .alert(isPresented: $usersClearedMessage) {
+                Alert(title: Text("Stored users cleared!"))
+            }
         }
     }
     
     func fetchUsers() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CDUser")
+        
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        do {
+            let cdUsers = try viewContext.fetch(fetchRequest) as! [CDUser]
+            
+            if !cdUsers.isEmpty {
+                print("==== CORE DATA LOADED!")
+                self.isLoading = false
+                self.users = cdUsers.map({ User.init(user: $0) })
+                return
+            }
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+        
+        print("++++ REQUEST LOADED!")
         let url = URL(string: "https://www.hackingwithswift.com/samples/friendface.json")!
         let request = URLRequest(url: url)
         
@@ -81,6 +110,7 @@ struct ContentView: View {
             
             if let decodedUsers = try? decoder.decode([User].self, from: data) {
                 DispatchQueue.main.async {
+                    self.save(users: decodedUsers)
                     self.users = decodedUsers
                 }
             } else {
@@ -88,6 +118,56 @@ struct ContentView: View {
             }
         }.resume()
         
+    }
+    
+    func save(users: [User]) {
+        viewContext.performAndWait {
+            users.forEach({ user in
+                let cdUser = CDUser(context: viewContext)
+                cdUser.id = user.id
+                cdUser.isActive = user.isActive
+                cdUser.name = user.name
+                cdUser.age = Int16(user.age)
+                cdUser.company = user.company
+                cdUser.email = user.email
+                cdUser.address = user.address
+                cdUser.about = user.about
+                cdUser.registered = user.registered
+                cdUser.tags = user.tags.joined()
+                
+                user.friends.forEach({ friend in
+                    let cdFriend = CDFriend(context: viewContext)
+                    cdFriend.id = friend.id
+                    cdFriend.name = friend.name
+                    cdFriend.user = cdUser
+                })
+            })
+        }
+        
+        if viewContext.hasChanges {
+            try? viewContext.save()
+        }
+    }
+    
+    func deleteUsers() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CDUser")
+        
+        do {
+            let cdUsers = try viewContext.fetch(fetchRequest) as! [CDUser]
+            
+            if !cdUsers.isEmpty {
+                cdUsers.forEach({
+                    viewContext.delete($0)
+                })
+            }
+        } catch {
+            fatalError(error.localizedDescription)
+        }
+        
+        if viewContext.hasChanges {
+            try? viewContext.save()
+            self.usersClearedMessage = true
+        }
     }
 }
 
